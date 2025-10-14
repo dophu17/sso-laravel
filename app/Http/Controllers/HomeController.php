@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Laravel\Passport\Token;
-use Laravel\Passport\Client;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -60,14 +59,6 @@ class HomeController extends Controller
             $revokedTokens = 0;
         }
         
-        // Get OAuth clients
-        try {
-            $clients = Client::select('id', 'name', 'redirect_uris', 'created_at')->get();
-        } catch (\Exception $e) {
-            \Log::error('Error loading clients: ' . $e->getMessage());
-            $clients = collect([]);
-        }
-        
         // Build statistics
         $stats = [
             'total_users' => $users->count(),
@@ -75,10 +66,9 @@ class HomeController extends Controller
             'active_tokens' => $activeTokens->count(),
             'expired_tokens' => $expiredTokens,
             'revoked_tokens' => $revokedTokens,
-            'total_clients' => $clients->count(),
         ];
         
-        return view('home', compact('users', 'activeTokens', 'stats', 'clients'));
+        return view('home', compact('users', 'activeTokens', 'stats'));
     }
 }
 

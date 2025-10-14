@@ -60,7 +60,7 @@
     @endauth
 
     {{-- Statistics --}}
-    <div class="grid md:grid-cols-4 gap-6 mb-8">
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center justify-between">
                 <div>
@@ -92,26 +92,12 @@
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-600 mb-1">Expired Tokens</p>
-                    <p class="text-3xl font-bold text-orange-600">{{ $stats['expired_tokens'] }}</p>
-                </div>
-                <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                    <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-sm text-gray-600 mb-1">OAuth Clients</p>
-                    <p class="text-3xl font-bold text-purple-600">{{ $stats['total_clients'] }}</p>
+                    <p class="text-sm text-gray-600 mb-1">Total Tokens</p>
+                    <p class="text-3xl font-bold text-purple-600">{{ $stats['total_tokens'] }}</p>
                 </div>
                 <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
                     <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
                     </svg>
                 </div>
             </div>
@@ -252,66 +238,6 @@
         @endif
     </div>
 
-    {{-- OAuth Clients --}}
-    <div class="bg-white rounded-lg shadow-md mb-8">
-        <div class="px-6 py-4 border-b border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-900">OAuth Clients</h2>
-            <p class="text-sm text-gray-600 mt-1">Các ứng dụng đã được đăng ký với SSO</p>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client Name</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Redirect URIs</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Active Tokens</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày tạo</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse($clients as $client)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $client->name }}</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <code class="text-xs bg-gray-100 px-2 py-1 rounded">{{ $client->id }}</code>
-                            </td>
-                            <td class="px-6 py-4">
-                                @php
-                                    $uris = is_array($client->redirect_uris) ? $client->redirect_uris : [];
-                                @endphp
-                                @if(count($uris) > 0)
-                                    @foreach($uris as $uri)
-                                        <div class="text-sm text-blue-600">{{ $uri }}</div>
-                                    @endforeach
-                                @else
-                                    <span class="text-sm text-gray-400">N/A</span>
-                                @endif
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                @php
-                                    $clientActiveTokens = $activeTokens->where('client_id', $client->id)->count();
-                                @endphp
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                    @if($clientActiveTokens > 0) bg-green-100 text-green-800 @else bg-gray-100 text-gray-800 @endif">
-                                    {{ $clientActiveTokens }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                {{ $client->created_at->format('d/m/Y H:i') }}
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">Chưa có OAuth client nào</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
 
     {{-- Features Grid --}}
     <div class="grid md:grid-cols-3 gap-6 mb-12">
