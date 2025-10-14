@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Callback Demo - SSO Login Success</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #10b981;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #6b7280;
+            font-size: 18px;
+        }
+        
+        .user-info {
+            background: #f3f4f6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .user-info h2 {
+            color: #1f2937;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .info-row {
+            display: flex;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #6b7280;
+            width: 150px;
+        }
+        
+        .info-value {
+            color: #1f2937;
+            flex: 1;
+            word-break: break-all;
+        }
+        
+        .token-box {
+            background: #eff6ff;
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .token-box h3 {
+            color: #1e40af;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .token-display {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            margin-bottom: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .copy-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background: #2563eb;
+        }
+        
+        .copy-status {
+            text-align: center;
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .test-section {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-section h3 {
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+        
+        .test-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+        
+        .test-btn:hover {
+            background: #059669;
+        }
+        
+        .response-box {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .error {
+            color: #ef4444;
+        }
+        
+        .success-icon {
+            font-size: 64px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-icon">🎉</div>
+        
+        <div class="header">
+            <h1>✅ Login Successful!</h1>
+            <p>Bạn đã đăng nhập thành công vào SSO Server</p>
+        </div>
+        
+        <div class="user-info">
+            <h2>👤 Thông tin User</h2>
+            <div class="info-row">
+                <div class="info-label">User ID:</div>
+                <div class="info-value" id="user-id">-</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Tên:</div>
+                <div class="info-value" id="user-name">-</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Email:</div>
+                <div class="info-value" id="user-email">-</div>
+            </div>
+            <div class="info-row">
+                <div class="info-label">Login Time:</div>
+                <div class="info-value" id="login-time">-</div>
+            </div>
+        </div>
+        
+        <div class="token-box">
+            <h3>🔑 JWT Token</h3>
+            <div class="token-display" id="token-display">Loading...</div>
+            <button class="copy-btn" onclick="copyToken()">📋 Copy JWT Token</button>
+            <div class="copy-status" id="copy-status">✅ Token copied to clipboard!</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🚀 Test API với Token</h3>
+            <button class="test-btn" onclick="testAPI()">Test API Now</button>
+            <div class="response-box" id="response-box"></div>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Get values
+        const status = urlParams.get('status');
+        const userId = urlParams.get('user_id');
+        const userName = urlParams.get('user_name');
+        const userEmail = urlParams.get('user_email');
+        const jwtToken = urlParams.get('jwt_token');
+        const loginTime = urlParams.get('login_time') || urlParams.get('register_time');
+        
+        // Display user info
+        if (status === 'success') {
+            document.getElementById('user-id').textContent = userId || '-';
+            document.getElementById('user-name').textContent = userName || '-';
+            document.getElementById('user-email').textContent = userEmail || '-';
+            document.getElementById('login-time').textContent = loginTime || '-';
+            document.getElementById('token-display').textContent = jwtToken || 'No token received';
+            
+            // Save token to localStorage
+            if (jwtToken) {
+                localStorage.setItem('sso_jwt_token', jwtToken);
+            }
+        } else {
+            document.getElementById('token-display').textContent = 'Login failed or no callback data';
+        }
+        
+        // Copy token function
+        function copyToken() {
+            const token = jwtToken;
+            if (!token) {
+                alert('No token to copy!');
+                return;
+            }
+            
+            navigator.clipboard.writeText(token).then(function() {
+                const status = document.getElementById('copy-status');
+                status.style.display = 'block';
+                
+                setTimeout(function() {
+                    status.style.display = 'none';
+                }, 3000);
+            }, function(err) {
+                alert('Failed to copy token: ' + err);
+            });
+        }
+        
+        // Test API function
+        function testAPI() {
+            const token = jwtToken;
+            const responseBox = document.getElementById('response-box');
+            
+            if (!token) {
+                responseBox.textContent = 'Error: No token available';
+                responseBox.className = 'response-box error';
+                responseBox.style.display = 'block';
+                return;
+            }
+            
+            responseBox.textContent = 'Testing API...';
+            responseBox.style.display = 'block';
+            
+            fetch('http://localhost:8000/api/user', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                responseBox.textContent = JSON.stringify(data, null, 2);
+                responseBox.className = 'response-box';
+            })
+            .catch(error => {
+                responseBox.textContent = 'Error: ' + error.message;
+                responseBox.className = 'response-box error';
+            });
+        }
+    </script>
+</body>
+</html>
+

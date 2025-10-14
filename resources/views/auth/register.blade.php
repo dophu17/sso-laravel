@@ -1,0 +1,83 @@
+@extends('layouts.app')
+
+@section('title', 'Đăng ký - SSO Server')
+
+@section('content')
+<div class="max-w-md mx-auto">
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <h2 class="text-2xl font-bold text-center mb-6">Đăng ký tài khoản</h2>
+
+        @if ($errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+            
+            @if(request()->has('callback'))
+                <input type="hidden" name="callback" value="{{ request()->get('callback') }}">
+                
+                <div class="bg-purple-50 border border-purple-200 text-purple-700 px-4 py-3 rounded mb-4">
+                    <p class="text-sm font-medium">🔗 Đăng ký với Callback</p>
+                    <p class="text-xs mt-1">Sau khi đăng ký, bạn sẽ được redirect về: <code class="bg-purple-100 px-1 rounded">{{ request()->get('callback') }}</code></p>
+                </div>
+            @endif
+            
+            @if(request()->has('client_id'))
+                <input type="hidden" name="client_id" value="{{ request()->get('client_id') }}">
+                <input type="hidden" name="redirect_uri" value="{{ request()->get('redirect_uri') }}">
+                <input type="hidden" name="state" value="{{ request()->get('state') }}">
+                
+                <div class="bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded mb-4">
+                    <p class="text-sm">Tạo tài khoản để tiếp tục với ứng dụng bên ngoài.</p>
+                </div>
+            @endif
+
+            <div class="mb-4">
+                <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Họ và tên</label>
+                <input type="text" name="name" id="name" value="{{ old('name') }}" 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       required autofocus>
+            </div>
+
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                <input type="email" name="email" id="email" value="{{ old('email') }}" 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       required>
+            </div>
+
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Mật khẩu</label>
+                <input type="password" name="password" id="password" 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       required>
+            </div>
+
+            <div class="mb-6">
+                <label for="password_confirmation" class="block text-gray-700 text-sm font-bold mb-2">Xác nhận mật khẩu</label>
+                <input type="password" name="password_confirmation" id="password_confirmation" 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       required>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                Đăng ký
+            </button>
+        </form>
+
+        <div class="mt-4 text-center">
+            <p class="text-gray-600">Đã có tài khoản? 
+                <a href="{{ route('login', request()->all()) }}" class="text-blue-600 hover:text-blue-800">Đăng nhập</a>
+            </p>
+        </div>
+    </div>
+</div>
+@endsection
+
