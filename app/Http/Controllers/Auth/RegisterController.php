@@ -72,6 +72,20 @@ class RegisterController extends Controller
                 'authenticated' => true,
             ], now()->addMinutes(5)); // 5 minutes expiry
             
+            // Log registration with callback URL
+            \App\Models\LoginLog::create([
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'user_name' => $user->name,
+                'callback_url' => $callbackUrl,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'action' => 'register',
+                'status' => 'success',
+                'session_token' => $sessionToken,
+                'login_at' => now(),
+            ]);
+            
             // Build callback URL with session token
             $params = [
                 'sso_session' => $sessionToken,

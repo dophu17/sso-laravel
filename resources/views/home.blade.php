@@ -169,6 +169,72 @@
         </div>
     </div>
 
+    {{-- Login Logs --}}
+    <div class="bg-white rounded-lg shadow-md mb-8">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900">Login Activity</h2>
+            <p class="text-sm text-gray-600 mt-1">Recent login/register/logout with callback URLs</p>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Callback URL</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">IP Address</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @php
+                        $loginLogs = \App\Models\LoginLog::orderBy('login_at', 'desc')->limit(10)->get();
+                    @endphp
+                    @forelse($loginLogs as $log)
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ $log->user_name ?? 'Unknown' }}</div>
+                                <div class="text-xs text-gray-500">{{ $log->email }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    @if($log->action === 'login') bg-green-100 text-green-800
+                                    @elseif($log->action === 'register') bg-blue-100 text-blue-800
+                                    @else bg-gray-100 text-gray-800 @endif">
+                                    {{ ucfirst($log->action) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                @if($log->callback_url)
+                                    <code class="text-xs bg-gray-100 px-2 py-1 rounded">{{ Str::limit($log->callback_url, 50) }}</code>
+                                @else
+                                    <span class="text-gray-400 text-sm">-</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                {{ $log->ip_address ?? '-' }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                                {{ $log->login_at->format('d/m/Y H:i:s') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="px-6 py-4 text-center text-gray-500">Chưa có login activity nào</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        @if($loginLogs->count() > 0)
+            <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+                <p class="text-sm text-gray-600">
+                    Hiển thị <strong>{{ $loginLogs->count() }}</strong> hoạt động gần nhất
+                </p>
+            </div>
+        @endif
+    </div>
+
     {{-- Active Tokens --}}
     <div class="bg-white rounded-lg shadow-md mb-8">
         <div class="px-6 py-4 border-b border-gray-200">

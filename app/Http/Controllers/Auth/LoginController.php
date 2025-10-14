@@ -70,6 +70,20 @@ class LoginController extends Controller
                     'authenticated' => true,
                 ], now()->addMinutes(5)); // 5 minutes expiry
                 
+                // Log login with callback URL
+                \App\Models\LoginLog::create([
+                    'user_id' => $user->id,
+                    'email' => $user->email,
+                    'user_name' => $user->name,
+                    'callback_url' => $callbackUrl,
+                    'ip_address' => $request->ip(),
+                    'user_agent' => $request->userAgent(),
+                    'action' => 'login',
+                    'status' => 'success',
+                    'session_token' => $sessionToken,
+                    'login_at' => now(),
+                ]);
+                
                 // Build callback URL with session token
                 $params = [
                     'sso_session' => $sessionToken,
@@ -144,6 +158,19 @@ class LoginController extends Controller
 
         // If callback URL is provided, redirect there
         if ($callbackUrl) {
+            // Log logout with callback URL
+            \App\Models\LoginLog::create([
+                'user_id' => $user->id ?? null,
+                'email' => $user->email ?? 'unknown',
+                'user_name' => $user->name ?? null,
+                'callback_url' => $callbackUrl,
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'action' => 'logout',
+                'status' => 'success',
+                'login_at' => now(),
+            ]);
+            
             $params = [
                 'status' => 'logged_out',
                 'message' => 'Successfully logged out from SSO',
