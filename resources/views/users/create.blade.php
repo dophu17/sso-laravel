@@ -48,6 +48,23 @@
                 @enderror
             </div>
 
+            <!-- Role -->
+            <div class="mb-6">
+                <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                <select 
+                    name="role" 
+                    id="role" 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    required
+                >
+                    <option value="member" {{ old('role') === 'member' ? 'selected' : '' }}>Member</option>
+                    <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
+                </select>
+                @error('role')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
             <!-- Password -->
             <div class="mb-6">
                 <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
