@@ -94,7 +94,7 @@
                                 </td>
                                 <td class="px-4 py-3">
                                     @php
-                                        $daysLeft = now()->diffInDays($token->expires_at);
+                                        $daysLeft = (int) now()->diffInDays($token->expires_at);
                                         $isActive = !$token->revoked && $token->expires_at > now();
                                     @endphp
                                     <span class="px-2 py-1 text-xs font-semibold rounded 

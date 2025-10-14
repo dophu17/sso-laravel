@@ -282,7 +282,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @php
-                                    $daysLeft = now()->diffInDays($token->expires_at);
+                                    $daysLeft = (int) now()->diffInDays($token->expires_at);
                                     $hoursLeft = now()->diffInHours($token->expires_at) % 24;
                                 @endphp
                                 <span class="text-sm 
