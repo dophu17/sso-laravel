@@ -45,10 +45,6 @@ class RegisterController extends Controller
             'email_verified_at' => now(),
         ]);
 
-        // Auto-login after registration
-        Auth::login($user);
-        $request->session()->regenerate();
-        
         // Log registration
         \App\Models\LoginLog::create([
             'user_id' => $user->id,
@@ -60,15 +56,23 @@ class RegisterController extends Controller
             'status' => 'success',
             'login_at' => now(),
         ]);
-        
-        // Store registration info for success page
-        $registerInfo = [
-            'user_id' => $user->id,
-            'user_name' => $user->name,
-            'user_email' => $user->email,
-            'register_time' => now(),
-        ];
 
+        // Check if admin is currently logged in
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            // Admin is creating a new user - don't auto-login, redirect to home
+            \Illuminate\Support\Facades\Log::info('Admin created new user', [
+                'admin_id' => Auth::id(),
+                'new_user_id' => $user->id,
+                'new_user_email' => $user->email
+            ]);
+            
+            return redirect()->route('home')->with('success', "User '{$user->name}' đã được tạo thành công!");
+        }
+
+        // For non-admin users or direct registration - auto-login
+        Auth::login($user);
+        $request->session()->regenerate();
+        
         // Check if redirect URL is provided (from client apps)
         $redirectUrl = $request->input('redirect');
         
