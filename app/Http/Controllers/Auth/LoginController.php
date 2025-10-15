@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -18,12 +19,18 @@ class LoginController extends Controller
         $client_id = $request->get('client_id');
         $redirect_uri = $request->get('redirect_uri');
         $state = $request->get('state');
+        $redirect = $request->get('redirect'); // For session sharing redirect
         
-        return view('auth.login', compact('client_id', 'redirect_uri', 'state'));
+        return view('auth.login', compact('client_id', 'redirect_uri', 'state', 'redirect'));
     }
 
     /**
      * Handle login request
+     * 
+     * Session Sharing Approach:
+     * - Auth::attempt() creates session in database
+     * - Session automatically shared across all subdomains via SESSION_DOMAIN
+     * - Cookie domain=.balocco-local.info shares session to all apps
      */
     public function login(Request $request)
     {
@@ -35,66 +42,48 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
+            // Regenerate session for security
             $request->session()->regenerate();
             
-            // Get authenticated user
+            // Session is now automatically shared across all subdomains!
+            // All apps can use Auth::check() to verify login status
+            
             $user = Auth::user();
             
-            // Create JWT token for this login session
-            $tokenResult = $user->createToken('Login Session Token', ['*']);
-            $jwtToken = $tokenResult->accessToken; // JWT string
+            // Check if redirect URL is provided (from client apps)
+            $redirectUrl = $request->input('redirect');
             
-            // Store token info in session
-            $loginInfo = [
+            // Log successful login
+            \App\Models\LoginLog::create([
                 'user_id' => $user->id,
+                'email' => $user->email,
                 'user_name' => $user->name,
-                'user_email' => $user->email,
-                'jwt_token' => $jwtToken,
-                'login_time' => now(),
-            ];
+                'callback_url' => $redirectUrl, // Store redirect URL
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'action' => 'login',
+                'status' => 'success',
+                'login_at' => now(),
+            ]);
 
-            // Check if callback URL is provided
-            if ($request->has('callback')) {
-                $callbackUrl = $request->get('callback');
+            // If redirect URL is provided (from client apps)
+            if ($redirectUrl) {
+                // Validate redirect URL (security: only allow same domain)
+                $parsedUrl = parse_url($redirectUrl);
                 
-                // Create a session token for callback verification
-                $sessionToken = \Illuminate\Support\Str::random(64);
-                
-                // Store login session in cache (shared across domains)
-                \Cache::put('sso_session_' . $sessionToken, [
-                    'user_id' => $user->id,
-                    'user_name' => $user->name,
-                    'user_email' => $user->email,
-                    'jwt_token' => $jwtToken,
-                    'login_time' => now()->toIso8601String(),
-                    'authenticated' => true,
-                ], now()->addMinutes(5)); // 5 minutes expiry
-                
-                // Log login with callback URL
-                \App\Models\LoginLog::create([
-                    'user_id' => $user->id,
-                    'email' => $user->email,
-                    'user_name' => $user->name,
-                    'callback_url' => $callbackUrl,
-                    'ip_address' => $request->ip(),
-                    'user_agent' => $request->userAgent(),
-                    'action' => 'login',
-                    'status' => 'success',
-                    'session_token' => $sessionToken,
-                    'login_at' => now(),
-                ]);
-                
-                // Build callback URL with session token
-                $params = [
-                    'sso_session' => $sessionToken,
-                    'status' => 'success',
-                ];
-                
-                // Add query parameters to callback URL
-                $separator = parse_url($callbackUrl, PHP_URL_QUERY) ? '&' : '?';
-                $redirectUrl = $callbackUrl . $separator . http_build_query($params);
-                
-                return redirect($redirectUrl);
+                if (isset($parsedUrl['host']) && str_ends_with($parsedUrl['host'], 'balocco-local.info')) {
+                    Log::info('SSO Login - Redirecting back to client', [
+                        'user_id' => $user->id,
+                        'redirect_url' => $redirectUrl
+                    ]);
+                    
+                    return redirect($redirectUrl);
+                } else {
+                    Log::warning('SSO Login - Invalid redirect URL', [
+                        'redirect_url' => $redirectUrl,
+                        'parsed_host' => $parsedUrl['host'] ?? 'none'
+                    ]);
+                }
             }
 
             // Redirect to OAuth authorization page if parameters exist
@@ -108,9 +97,8 @@ class LoginController extends Controller
                 ]);
             }
 
-            // Show token page after login
-            return redirect()->route('login.success')
-                ->with('login_info', $loginInfo);
+            // Default: redirect to dashboard or home
+            return redirect()->intended(route('home'));
         }
 
         return back()->withErrors([
@@ -119,70 +107,57 @@ class LoginController extends Controller
     }
 
     /**
-     * Show login success page with JWT token
+     * Show dashboard after login
      */
-    public function showLoginSuccess()
+    public function dashboard()
     {
-        $loginInfo = session('login_info');
-        
-        if (!$loginInfo) {
-            return redirect()->route('home');
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
         
         $user = Auth::user();
         
-        return view('auth.login-success', compact('user', 'loginInfo'));
+        return view('dashboard', compact('user'));
     }
 
     /**
      * Handle logout request
+     * 
+     * Session Sharing Approach:
+     * - Auth::logout() destroys session in database
+     * - Session automatically removed from all subdomains
+     * - All apps will see user as logged out
      */
     public function logout(Request $request)
     {
-        $callbackUrl = $request->query('callback');
+        $user = null;
         
-        // Revoke all active tokens for this user
         if (Auth::check()) {
             $user = Auth::user();
-            
-            // Revoke all tokens
-            \Laravel\Passport\Token::where('user_id', $user->id)
-                ->where('revoked', false)
-                ->update(['revoked' => true]);
         }
         
+        // Logout (destroys session in database)
         Auth::logout();
-
+        
+        // Invalidate session - this affects all subdomains!
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        // If callback URL is provided, redirect there
-        if ($callbackUrl) {
-            // Log logout with callback URL
+        
+        // Log logout
+        if ($user) {
             \App\Models\LoginLog::create([
-                'user_id' => $user->id ?? null,
-                'email' => $user->email ?? 'unknown',
-                'user_name' => $user->name ?? null,
-                'callback_url' => $callbackUrl,
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'user_name' => $user->name,
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
                 'action' => 'logout',
                 'status' => 'success',
                 'login_at' => now(),
             ]);
-            
-            $params = [
-                'status' => 'logged_out',
-                'message' => 'Successfully logged out from SSO',
-            ];
-            
-            $separator = parse_url($callbackUrl, PHP_URL_QUERY) ? '&' : '?';
-            $redirectUrl = $callbackUrl . $separator . http_build_query($params);
-            
-            return redirect($redirectUrl);
         }
 
-        return redirect('/');
+        return redirect('/')->with('status', 'Đã đăng xuất thành công!');
     }
     
     /**

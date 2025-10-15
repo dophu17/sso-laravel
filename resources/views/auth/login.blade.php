@@ -20,11 +20,20 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
             
+            @if(request()->has('redirect'))
+                <input type="hidden" name="redirect" value="{{ request()->get('redirect') }}">
+                
+                <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded mb-4">
+                    <p class="text-sm font-medium">🔗 SSO Login (Session Sharing)</p>
+                    <p class="text-xs mt-1">Sau khi login, bạn sẽ được redirect về: <code class="bg-green-100 px-1 rounded">{{ request()->get('redirect') }}</code></p>
+                </div>
+            @endif
+            
             @if(request()->has('callback'))
                 <input type="hidden" name="callback" value="{{ request()->get('callback') }}">
                 
                 <div class="bg-purple-50 border border-purple-200 text-purple-700 px-4 py-3 rounded mb-4">
-                    <p class="text-sm font-medium">🔗 Login với Callback</p>
+                    <p class="text-sm font-medium">🔗 Login với Callback (Token-based)</p>
                     <p class="text-xs mt-1">Sau khi login, bạn sẽ được redirect về: <code class="bg-purple-100 px-1 rounded">{{ request()->get('callback') }}</code></p>
                 </div>
             @endif
