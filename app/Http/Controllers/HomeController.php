@@ -17,7 +17,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         // Get users with pagination
-        $users = User::orderBy('created_at', 'desc')->paginate(3);
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
         
         // Get total users count for statistics
         $totalUsers = User::count();
