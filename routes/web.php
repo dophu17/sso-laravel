@@ -23,5 +23,4 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
-Route::get('/register/success', [RegisterController::class, 'showRegisterSuccess'])->name('register.success');
 

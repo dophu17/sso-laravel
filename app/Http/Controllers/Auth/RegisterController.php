@@ -18,8 +18,9 @@ class RegisterController extends Controller
         $client_id = $request->get('client_id');
         $redirect_uri = $request->get('redirect_uri');
         $state = $request->get('state');
+        $redirect = $request->get('redirect'); // For session sharing redirect
         
-        return view('auth.register', compact('client_id', 'redirect_uri', 'state'));
+        return view('auth.register', compact('client_id', 'redirect_uri', 'state', 'redirect'));
     }
 
     /**
@@ -76,27 +77,22 @@ class RegisterController extends Controller
             $parsedUrl = parse_url($redirectUrl);
             
             if (isset($parsedUrl['host']) && str_ends_with($parsedUrl['host'], 'balocco-local.info')) {
+                \Illuminate\Support\Facades\Log::info('SSO Register - Redirecting back to client', [
+                    'user_id' => $user->id,
+                    'redirect_url' => $redirectUrl
+                ]);
                 return redirect($redirectUrl);
+            } else {
+                \Illuminate\Support\Facades\Log::warning('SSO Register - Invalid redirect URL', [
+                    'redirect_url' => $redirectUrl,
+                    'parsed_host' => $parsedUrl['host'] ?? 'none'
+                ]);
             }
         }
 
-
-        // Show registration success page
-        return redirect()->route('register.success')
-            ->with('register_info', $registerInfo);
+        // Default: redirect to profile (since user is already logged in)
+        return redirect()->intended(route('profile'));
     }
     
-    /**
-     * Show registration success page
-     */
-    public function showRegisterSuccess()
-    {
-        $registerInfo = session('register_info');
-        
-        if (!$registerInfo) {
-            return redirect()->route('home');
-        }
-        
-        return view('auth.register-success');
-    }
 }
+
