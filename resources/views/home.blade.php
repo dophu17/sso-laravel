@@ -287,7 +287,8 @@
         </div>
     </div>
 
-    <!-- User Management -->
+    <!-- User Management (Admin Only) -->
+    @if(Auth::check() && Auth::user()->role === 'admin')
     <div class="bg-white rounded-lg shadow-md p-8 mb-12">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-2xl font-bold text-gray-900">👥 User Management</h2>
@@ -374,6 +375,7 @@
         </div>
         @endif
     </div>
+    @endif
 
     <!-- Recent Login Activity -->
     @if($stats['recent_logins']->count() > 0)

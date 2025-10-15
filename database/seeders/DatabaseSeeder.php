@@ -13,15 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create Admin account
-        User::updateOrCreate(
-            ['email' => 'admin@gmail.com'],
-            [
-                'name' => 'Admin',
-                'password' => \Hash::make('password123'),
-                'role' => 'admin',
-                'email_verified_at' => now(),
-            ]
-        );
+        // Create admin and member users
+        $this->call([
+            AdminUserSeeder::class,
+        ]);
     }
 }

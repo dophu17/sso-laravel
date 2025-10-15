@@ -9,7 +9,7 @@
     <div class="mb-8">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">Dashboard & Hồ sơ cá nhân</h1>
+                <h1 class="text-3xl font-bold text-gray-900">Hồ sơ cá nhân</h1>
                 <p class="text-gray-600 mt-2">Quản lý thông tin tài khoản và theo dõi trạng thái đăng nhập</p>
             </div>
             <div class="flex items-center space-x-4">
