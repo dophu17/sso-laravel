@@ -392,6 +392,25 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination -->
+        <div class="mt-6">
+            <div class="flex items-center justify-between">
+                <div class="text-sm text-gray-700">
+                    Hiển thị 
+                    <span class="font-medium">{{ $users->firstItem() }}</span>
+                    đến 
+                    <span class="font-medium">{{ $users->lastItem() }}</span>
+                    trong tổng số 
+                    <span class="font-medium">{{ $users->total() }}</span>
+                    người dùng
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    {{ $users->links() }}
+                </div>
+            </div>
+        </div>
         @else
         <div class="text-center py-12 text-gray-500">
             <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -14,14 +14,17 @@ class HomeController extends Controller
      * Simple homepage for Session Sharing SSO
      * Shows user management for admins
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Get all users with recent login info
-        $users = User::orderBy('created_at', 'desc')->get();
+        // Get users with pagination
+        $users = User::orderBy('created_at', 'desc')->paginate(3);
+        
+        // Get total users count for statistics
+        $totalUsers = User::count();
         
         // Get statistics
         $stats = [
-            'total_users' => $users->count(),
+            'total_users' => $totalUsers,
             'active_sessions' => DB::table('sessions')->whereNotNull('user_id')->count(),
             'total_logins' => \App\Models\LoginLog::where('action', 'login')->count(),
             'recent_logins' => \App\Models\LoginLog::where('action', 'login')
