@@ -87,8 +87,8 @@ class LoginController extends Controller
             }
 
 
-            // Default: redirect to dashboard or home
-            return redirect()->intended(route('home'));
+            // Default: redirect to profile or home
+            return redirect()->intended(route('profile'));
         }
 
         return back()->withErrors([
@@ -96,19 +96,6 @@ class LoginController extends Controller
         ])->onlyInput('email');
     }
 
-    /**
-     * Show dashboard after login
-     */
-    public function dashboard()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-        
-        $user = Auth::user();
-        
-        return view('dashboard', compact('user'));
-    }
 
     /**
      * Handle logout request

@@ -42,7 +42,7 @@ class SSOController extends Controller
             'user_email' => $userData['user_email']
         ]);
 
-        return redirect()->intended('/dashboard')->with('success', 'Đăng nhập thành công!');
+        return redirect()->intended('/profile')->with('success', 'Đăng nhập thành công!');
     }
 
     /**

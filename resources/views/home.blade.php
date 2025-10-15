@@ -69,8 +69,8 @@
                     </div>
                 </div>
                 <div>
-                    <a href="{{ route('dashboard') }}" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                        Go to Dashboard
+                    <a href="{{ route('profile') }}" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        Go to Profile
                     </a>
                 </div>
             </div>
