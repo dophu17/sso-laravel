@@ -80,16 +80,6 @@ class RegisterController extends Controller
             }
         }
 
-        // Redirect to OAuth authorization page if parameters exist
-        if ($request->has('client_id') && $request->has('redirect_uri')) {
-            return redirect()->route('oauth.authorize', [
-                'client_id' => $request->get('client_id'),
-                'redirect_uri' => $request->get('redirect_uri'),
-                'response_type' => 'code',
-                'state' => $request->get('state'),
-                'scope' => '',
-            ]);
-        }
 
         // Show registration success page
         return redirect()->route('register.success')

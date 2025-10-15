@@ -86,16 +86,6 @@ class LoginController extends Controller
                 }
             }
 
-            // Redirect to OAuth authorization page if parameters exist
-            if ($request->has('client_id') && $request->has('redirect_uri')) {
-                return redirect()->route('oauth.authorize', [
-                    'client_id' => $request->get('client_id'),
-                    'redirect_uri' => $request->get('redirect_uri'),
-                    'response_type' => 'code',
-                    'state' => $request->get('state'),
-                    'scope' => '',
-                ]);
-            }
 
             // Default: redirect to dashboard or home
             return redirect()->intended(route('home'));
