@@ -1,182 +1,138 @@
-# 📚 SSO Documentation
+# 📚 Session Sharing SSO - Documentation
 
-## 🎯 Quick Start
+## 🎯 Overview
 
-**Bắt đầu từ đây:**
-- 📖 [`SSO-SUBDOMAIN-INTEGRATION.md`](SSO-SUBDOMAIN-INTEGRATION.md) - **Integration guide cho Patent Monitor & Bookcase**
+**Session Sharing SSO** cho phép user **login 1 lần** tại Auth Server, sau đó tự động đăng nhập vào tất cả apps trên cùng domain.
 
 ---
 
-## 📁 Documents
+## 📖 Documents
 
-### 1. Integration Guide
-**File:** [`SSO-SUBDOMAIN-INTEGRATION.md`](SSO-SUBDOMAIN-INTEGRATION.md)
+### 1. Session Sharing Guide
+**File:** [`SESSION-SHARING-GUIDE.md`](SESSION-SHARING-GUIDE.md)
 
 **Nội dung:**
-- ✅ Hướng dẫn integrate SSO cho Patent Monitor
-- ✅ Hướng dẫn integrate SSO cho Bookcase
-- ✅ Code examples (index.php, sso-callback.php)
-- ✅ Configuration guide
+- ✅ Complete session sharing guide
+- ✅ Configuration chi tiết
+- ✅ Implementation examples
 - ✅ Security recommendations
 - ✅ Testing guide
 - ✅ Troubleshooting
-- ✅ Checklist
 
-**Dành cho:** Developers integrate SSO vào client apps
-
----
-
-### 2. Flow Documentation
-**File:** [`SSO-SIMPLE-FLOW.md`](SSO-SIMPLE-FLOW.md)
-
-**Nội dung:**
-- ✅ SSO flow diagram
-- ✅ API endpoints reference
-- ✅ Implementation examples
-- ✅ Security notes
-- ✅ Monitoring guide
-
-**Dành cho:** Hiểu rõ SSO flow hoạt động như thế nào
+**Dành cho:** Developers muốn hiểu chi tiết session sharing
 
 ---
 
-## 📋 Other Documents
+## 📋 Root Documents
 
-### Root Directory:
+### Quick Start:
+**[`SESSION-SHARING-QUICK-SETUP.md`](../SESSION-SHARING-QUICK-SETUP.md)** ⭐
+- 5-minute setup guide
+- Step-by-step cho cả 3 apps
+- **BẮT ĐẦU TỪ ĐÂY!**
 
-**[`SSO-SETUP.md`](../SSO-SETUP.md)**
-- Overview của toàn bộ hệ thống
-- Domain configuration
-- Quick start guide
-- Deployment checklist
-
-**[`QUICK-REFERENCE.md`](../QUICK-REFERENCE.md)**
-- Quick reference card
-- API endpoints
-- Code snippets
+### Testing:
+**[`TEST-SESSION-SHARING.md`](../TEST-SESSION-SHARING.md)**
+- Complete testing guide
 - Debug commands
+- Success criteria
+
+### Fixes:
+- **[`QUICK-FIX-419.md`](../QUICK-FIX-419.md)** - Fix 419 error
+- **[`FIX-REDIRECT-PARAMETER.md`](../FIX-REDIRECT-PARAMETER.md)** - Fix redirect
+- **[`FIXES-SUMMARY.md`](../FIXES-SUMMARY.md)** - All fixes
+
+### Info:
+- **[`LOGINCONTROLLER-UPDATED.md`](../LOGINCONTROLLER-UPDATED.md)** - LoginController changes
+- **[`CLEANUP-SUMMARY.md`](../CLEANUP-SUMMARY.md)** - Cleanup summary
+- **[`README-SESSION-SHARING.md`](../README-SESSION-SHARING.md)** - Main README
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────┐
-│        Auth Server (SSO)                │
-│   https://auth.balocco-local.info       │
-│                                         │
-│   - User authentication                │
-│   - Session management                 │
-│   - Token generation                   │
-│   - API: /api/sso/verify-session       │
-└──────────────┬──────────────────────────┘
+┌──────────────────────────────────────────┐
+│       Auth Server (SSO)                  │
+│    auth.balocco-local.info               │
+│                                          │
+│  ┌────────────────────────────────────┐ │
+│  │  LoginController                   │ │
+│  │  - Auth::attempt()                 │ │
+│  │  - Session sharing via database    │ │
+│  └────────────────────────────────────┘ │
+│                                          │
+│  ┌────────────────────────────────────┐ │
+│  │  Database: sessions table          │ │
+│  │  - Shared across all subdomains    │ │
+│  └────────────────────────────────────┘ │
+└──────────────┬───────────────────────────┘
                │
-               │ SSO Token
+        Session Cookie
+     (domain=.balocco-local.info)
                │
-       ┌───────┴────────┐
-       │                │
-┌──────▼─────┐  ┌──────▼─────┐
-│  Client A  │  │  Client B  │
-│  Patent    │  │  Bookcase  │
-│  Monitor   │  │            │
-└────────────┘  └────────────┘
+      ┌────────┴────────┐
+      │                 │
+┌─────▼──────┐    ┌────▼──────┐
+│  Client A  │    │  Client B │
+│  Patent    │    │  Bookcase │
+│  Monitor   │    │           │
+│            │    │           │
+│ Auth::check│    │ Auth::check│
+└────────────┘    └───────────┘
 ```
 
 ---
 
-## 🔄 SSO Flow Summary
+## 🔄 Session Sharing Flow
 
-1. User → Client App (Patent Monitor)
-2. Client check session → Không có
-3. Redirect → Auth Server
-4. Auth Server check login
-   - Đã login → Tạo token → Redirect về
-   - Chưa login → Login form → Tạo token → Redirect về
-5. Client verify token → Lưu user info
-6. ✅ Done!
-
-**User truy cập Client B:**
-- Auth Server check → ✅ Đã login!
-- Tạo token → Redirect ngay
-- ✅ Auto-login!
-
----
-
-## 📊 API Endpoints
-
-### Check Login
 ```
-GET /api/sso/verify-session?callback={URL}
-```
-
-### Verify Token
-```
-POST /api/sso/verify-session
-Body: sso_session={TOKEN}
+1. User login ở Auth Server
+   ↓
+2. Session saved to database
+   ↓
+3. Cookie set (domain=.balocco-local.info)
+   ↓
+4. All subdomains share same cookie
+   ↓
+5. Client A/B: Auth::check() → Query database
+   ↓
+6. ✅ User logged in!
 ```
 
 ---
 
 ## 🎓 Learning Path
 
-1. **Start:** Read [`SSO-SETUP.md`](../SSO-SETUP.md) - Hiểu overview
-2. **Understand:** Read [`SSO-SIMPLE-FLOW.md`](SSO-SIMPLE-FLOW.md) - Hiểu flow
-3. **Implement:** Follow [`SSO-SUBDOMAIN-INTEGRATION.md`](SSO-SUBDOMAIN-INTEGRATION.md) - Integrate vào app
-4. **Reference:** Use [`QUICK-REFERENCE.md`](../QUICK-REFERENCE.md) - Quick lookup
+1. **Start:** [`SESSION-SHARING-QUICK-SETUP.md`](../SESSION-SHARING-QUICK-SETUP.md) - Quick setup
+2. **Understand:** [`SESSION-SHARING-GUIDE.md`](SESSION-SHARING-GUIDE.md) - Deep dive
+3. **Test:** [`TEST-SESSION-SHARING.md`](../TEST-SESSION-SHARING.md) - Testing
+4. **Troubleshoot:** [`QUICK-FIX-419.md`](../QUICK-FIX-419.md) - Common issues
 
 ---
 
-## 🔧 Configuration Files
+## 📞 Need Help?
 
+### Common Issues:
+- **419 Error:** Read [`QUICK-FIX-419.md`](../QUICK-FIX-419.md)
+- **Redirect not working:** Read [`FIX-REDIRECT-PARAMETER.md`](../FIX-REDIRECT-PARAMETER.md)
+- **Session not shared:** Read [`SESSION-SHARING-GUIDE.md`](SESSION-SHARING-GUIDE.md)
+
+### Debug:
+```bash
+# Logs
+tail -f storage/logs/laravel.log
+
+# Database
+SELECT * FROM sso_shared.sessions WHERE user_id IS NOT NULL;
+
+# Config
+php artisan tinker
+config('session.domain');
 ```
-sso-laravel/
-├── .env                          ← Environment config
-├── config/
-│   ├── app.php                  ← App config
-│   ├── session.php              ← Session config
-│   └── cors.php                 ← CORS config
-├── routes/
-│   ├── api.php                  ← API routes
-│   └── web.php                  ← Web routes
-└── app/Http/Controllers/Api/
-    └── SessionController.php    ← SSO logic
-```
-
----
-
-## 🐛 Troubleshooting
-
-**Common issues:**
-
-1. **Session not shared:**
-   - Check: `SESSION_DOMAIN=.balocco-local.info` (có dấu chấm)
-
-2. **CORS error:**
-   - Check: `config/cors.php` allowed origins
-
-3. **Token expired:**
-   - Token có hiệu lực 5 phút
-   - Verify ngay sau khi nhận
-
-4. **Redirect loop:**
-   - Check callback URL xử lý token đúng
-   - Check không redirect lại SSO sau khi có user
-
-**Full troubleshooting:** See [`SSO-SUBDOMAIN-INTEGRATION.md`](SSO-SUBDOMAIN-INTEGRATION.md#troubleshooting)
-
----
-
-## 📞 Support
-
-**Need help?**
-
-1. Read full integration guide: [`SSO-SUBDOMAIN-INTEGRATION.md`](SSO-SUBDOMAIN-INTEGRATION.md)
-2. Check SSO logs: `storage/logs/laravel.log`
-3. Check database logs: `login_logs` table
-4. Check Redis: `redis-cli KEYS "sso_session_*"`
 
 ---
 
 **Updated:** 2025-10-15  
-**Version:** 1.0
+**Version:** 1.0 - Session Sharing Only
 

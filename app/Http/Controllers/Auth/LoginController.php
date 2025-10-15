@@ -127,6 +127,7 @@ class LoginController extends Controller
      * - Auth::logout() destroys session in database
      * - Session automatically removed from all subdomains
      * - All apps will see user as logged out
+     * - Supports redirect parameter to redirect back to client after logout
      */
     public function logout(Request $request)
     {
@@ -135,6 +136,9 @@ class LoginController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
         }
+        
+        // Get redirect URL (from client apps)
+        $redirectUrl = $request->input('redirect') ?? $request->query('redirect');
         
         // Logout (destroys session in database)
         Auth::logout();
@@ -149,12 +153,33 @@ class LoginController extends Controller
                 'user_id' => $user->id,
                 'email' => $user->email,
                 'user_name' => $user->name,
+                'callback_url' => $redirectUrl, // Store redirect URL
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
                 'action' => 'logout',
                 'status' => 'success',
                 'login_at' => now(),
             ]);
+        }
+
+        // If redirect URL is provided (from client apps)
+        if ($redirectUrl) {
+            // Validate redirect URL (security: only allow same domain)
+            $parsedUrl = parse_url($redirectUrl);
+            
+            if (isset($parsedUrl['host']) && str_ends_with($parsedUrl['host'], 'balocco-local.info')) {
+                Log::info('SSO Logout - Redirecting back to client', [
+                    'user_id' => $user->id ?? null,
+                    'redirect_url' => $redirectUrl
+                ]);
+                
+                return redirect($redirectUrl)->with('status', 'Đã đăng xuất thành công!');
+            } else {
+                Log::warning('SSO Logout - Invalid redirect URL', [
+                    'redirect_url' => $redirectUrl,
+                    'parsed_host' => $parsedUrl['host'] ?? 'none'
+                ]);
+            }
         }
 
         return redirect('/')->with('status', 'Đã đăng xuất thành công!');

@@ -93,10 +93,35 @@ class CheckSharedSession
     public function handle(Request $request, Closure $next)
     {
         if (!Auth::check()) {
-            return redirect('https://auth.balocco-local.info/login?redirect=' . urlencode($request->url()));
+            // Redirect to Auth Server với redirect parameter
+            $authUrl = 'http://auth.balocco-local.info/login';
+            return redirect($authUrl . '?redirect=' . urlencode($request->url()));
         }
 
         return $next($request);
+    }
+}
+```
+
+File: `app/Http/Controllers/Auth/LogoutController.php` (Optional - cho UX tốt hơn)
+
+```php
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+
+class LogoutController extends Controller
+{
+    public function logout(Request $request)
+    {
+        // Redirect to Auth Server logout với redirect parameter
+        $authUrl = 'http://auth.balocco-local.info/logout';
+        $homeUrl = url('/'); // Homepage của client app
+        
+        return redirect($authUrl . '?redirect=' . urlencode($homeUrl));
     }
 }
 ```

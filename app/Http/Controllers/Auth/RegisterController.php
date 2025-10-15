@@ -24,6 +24,10 @@ class RegisterController extends Controller
 
     /**
      * Handle registration request
+     * 
+     * Session Sharing Approach:
+     * - Create user and auto-login
+     * - Session automatically shared across all subdomains
      */
     public function register(Request $request)
     {
@@ -40,63 +44,40 @@ class RegisterController extends Controller
             'email_verified_at' => now(),
         ]);
 
+        // Auto-login after registration
         Auth::login($user);
+        $request->session()->regenerate();
         
-        // Create JWT token for this registration
-        $tokenResult = $user->createToken('Registration Token', ['*']);
-        $jwtToken = $tokenResult->accessToken; // JWT string
+        // Log registration
+        \App\Models\LoginLog::create([
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'user_name' => $user->name,
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'action' => 'register',
+            'status' => 'success',
+            'login_at' => now(),
+        ]);
         
-        // Store registration info in session
+        // Store registration info for success page
         $registerInfo = [
             'user_id' => $user->id,
             'user_name' => $user->name,
             'user_email' => $user->email,
-            'jwt_token' => $jwtToken,
             'register_time' => now(),
         ];
 
-        // Check if callback URL is provided
-        if ($request->has('callback')) {
-            $callbackUrl = $request->get('callback');
+        // Check if redirect URL is provided (from client apps)
+        $redirectUrl = $request->input('redirect');
+        
+        if ($redirectUrl) {
+            // Validate redirect URL (security: only allow same domain)
+            $parsedUrl = parse_url($redirectUrl);
             
-            // Create a session token for callback verification
-            $sessionToken = \Illuminate\Support\Str::random(64);
-            
-            // Store registration session in cache (shared across domains)
-            \Cache::put('sso_session_' . $sessionToken, [
-                'user_id' => $user->id,
-                'user_name' => $user->name,
-                'user_email' => $user->email,
-                'jwt_token' => $jwtToken,
-                'register_time' => now()->toIso8601String(),
-                'authenticated' => true,
-            ], now()->addMinutes(5)); // 5 minutes expiry
-            
-            // Log registration with callback URL
-            \App\Models\LoginLog::create([
-                'user_id' => $user->id,
-                'email' => $user->email,
-                'user_name' => $user->name,
-                'callback_url' => $callbackUrl,
-                'ip_address' => $request->ip(),
-                'user_agent' => $request->userAgent(),
-                'action' => 'register',
-                'status' => 'success',
-                'session_token' => $sessionToken,
-                'login_at' => now(),
-            ]);
-            
-            // Build callback URL with session token
-            $params = [
-                'sso_session' => $sessionToken,
-                'status' => 'success',
-            ];
-            
-            // Add query parameters to callback URL
-            $separator = parse_url($callbackUrl, PHP_URL_QUERY) ? '&' : '?';
-            $redirectUrl = $callbackUrl . $separator . http_build_query($params);
-            
-            return redirect($redirectUrl);
+            if (isset($parsedUrl['host']) && str_ends_with($parsedUrl['host'], 'balocco-local.info')) {
+                return redirect($redirectUrl);
+            }
         }
 
         // Redirect to OAuth authorization page if parameters exist
@@ -110,13 +91,13 @@ class RegisterController extends Controller
             ]);
         }
 
-        // Show token page after registration
+        // Show registration success page
         return redirect()->route('register.success')
             ->with('register_info', $registerInfo);
     }
     
     /**
-     * Show registration success page with JWT token
+     * Show registration success page
      */
     public function showRegisterSuccess()
     {
@@ -126,8 +107,6 @@ class RegisterController extends Controller
             return redirect()->route('home');
         }
         
-        $user = Auth::user();
-        
-        return view('auth.register-success', compact('user', 'registerInfo'));
+        return view('auth.register-success');
     }
 }

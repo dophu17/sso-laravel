@@ -29,15 +29,6 @@
                 </div>
             @endif
             
-            @if(request()->has('callback'))
-                <input type="hidden" name="callback" value="{{ request()->get('callback') }}">
-                
-                <div class="bg-purple-50 border border-purple-200 text-purple-700 px-4 py-3 rounded mb-4">
-                    <p class="text-sm font-medium">🔗 Login với Callback (Token-based)</p>
-                    <p class="text-xs mt-1">Sau khi login, bạn sẽ được redirect về: <code class="bg-purple-100 px-1 rounded">{{ request()->get('callback') }}</code></p>
-                </div>
-            @endif
-            
             @if(request()->has('client_id'))
                 <input type="hidden" name="client_id" value="{{ request()->get('client_id') }}">
                 <input type="hidden" name="redirect_uri" value="{{ request()->get('redirect_uri') }}">
