@@ -9,7 +9,7 @@
     <div class="mb-8">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900">✏️ Edit User</h1>
+                <h1 class="text-3xl font-bold text-gray-900">✏️ Chỉnh sửa người dùng</h1>
                 <p class="text-gray-600 mt-2">Chỉnh sửa thông tin người dùng</p>
             </div>
             <div class="flex items-center space-x-4">
@@ -17,7 +17,7 @@
                     <svg class="w-5 h-5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
-                    Back to Home
+                    Về trang chủ
                 </a>
             </div>
         </div>
@@ -83,8 +83,8 @@
                 <select name="role" 
                         id="role"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-                    <option value="member" {{ old('role', $user->role) === 'member' ? 'selected' : '' }}>Member</option>
-                    <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="member" {{ old('role', $user->role) === 'member' ? 'selected' : '' }}>Thành viên</option>
+                    <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>Quản trị viên</option>
                 </select>
                 @error('role')
                     <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -142,9 +142,9 @@
             <div>
                 <h4 class="font-semibold text-yellow-900 mb-2">Lưu ý quan trọng</h4>
                 <ul class="text-sm text-yellow-800 space-y-1">
-                    <li>• Thay đổi email sẽ ảnh hưởng đến khả năng đăng nhập của user</li>
-                    <li>• Thay đổi role từ Member sang Admin sẽ cấp quyền quản trị</li>
-                    <li>• Thay đổi role từ Admin sang Member sẽ thu hồi quyền quản trị</li>
+                    <li>• Thay đổi email sẽ ảnh hưởng đến khả năng đăng nhập của người dùng</li>
+                    <li>• Thay đổi vai trò từ Thành viên sang Quản trị viên sẽ cấp quyền quản trị</li>
+                    <li>• Thay đổi vai trò từ Quản trị viên sang Thành viên sẽ thu hồi quyền quản trị</li>
                     <li>• Tất cả thay đổi sẽ được ghi log để theo dõi</li>
                 </ul>
             </div>

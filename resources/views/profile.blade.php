@@ -32,17 +32,17 @@
                 </svg>
             </div>
             <div>
-                <h2 class="text-3xl font-bold text-gray-900">Welcome back, {{ $user->name }}!</h2>
-                <p class="text-gray-600">SSO Server Dashboard</p>
+                <h2 class="text-3xl font-bold text-gray-900">Chào mừng trở lại, {{ $user->name }}!</h2>
+                <p class="text-gray-600">Bảng điều khiển SSO Server</p>
             </div>
         </div>
 
         <div class="bg-green-50 border border-green-200 rounded-lg p-4">
             <p class="text-green-800">
-                <strong>✅ You're logged in via Session Sharing SSO!</strong>
+                <strong>✅ Bạn đã đăng nhập qua hệ thống chia sẻ phiên SSO!</strong>
             </p>
             <p class="text-sm text-green-700 mt-1">
-                Your session is automatically shared across all apps on *.balocco-local.info
+                Phiên đăng nhập của bạn tự động được chia sẻ trên tất cả ứng dụng *.balocco-local.info
             </p>
         </div>
     </div>
@@ -50,16 +50,16 @@
     <!-- Session Sharing Info -->
     <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
         <h3 class="font-semibold text-blue-900 mb-3">
-            🔐 Session Sharing Active
+            🔐 Chia sẻ phiên đăng nhập đang hoạt động
         </h3>
         <p class="text-blue-800 mb-2">
-            Your login session is stored in a shared database and automatically available to:
+            Phiên đăng nhập của bạn được lưu trong database chung và tự động có sẵn cho:
         </p>
         <ul class="list-disc list-inside text-blue-700 space-y-1 ml-4">
-            <li>Auth Server (auth.balocco-local.info)</li>
-            <li>Patent Monitor (patent-monitor.balocco-local.info)</li>
-            <li>Bookcase (bookcase.balocco-local.info)</li>
-            <li>Any future apps on *.balocco-local.info</li>
+            <li>Server Auth (auth.balocco-local.info)</li>
+            <li>Hệ thống giám sát bằng sáng chế (patent-monitor.balocco-local.info)</li>
+            <li>Hệ thống quản lý sách (bookcase.balocco-local.info)</li>
+            <li>Bất kỳ ứng dụng nào trong tương lai trên *.balocco-local.info</li>
         </ul>
     </div>
 
@@ -118,7 +118,7 @@
                             <span class="font-medium">{{ $user->created_at->format('d/m/Y') }}</span>
                         </div>
                         <div class="flex justify-between text-sm">
-                            <span class="text-gray-600">Cập nhật:</span>
+                            <span class="text-gray-600">Cập nhật lần cuối:</span>
                             <span class="font-medium">{{ $user->updated_at->format('d/m/Y H:i') }}</span>
                         </div>
                         <div class="flex justify-between text-sm">
@@ -229,7 +229,7 @@
 
     <!-- Quick Actions -->
     <div class="mt-8 bg-white rounded-lg shadow-md p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Thao tác nhanh</h3>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <a href="{{ route('home') }}" class="block p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition">
@@ -238,8 +238,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
                     </svg>
                     <div>
-                        <p class="font-medium text-gray-900">Home</p>
-                        <p class="text-sm text-gray-600">Back to homepage</p>
+                        <p class="font-medium text-gray-900">Trang chủ</p>
+                        <p class="text-sm text-gray-600">Về trang chủ</p>
                     </div>
                 </div>
             </a>
@@ -250,8 +250,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
                     <div>
-                        <p class="font-medium text-red-900">Logout</p>
-                        <p class="text-sm text-red-700">Logout from all apps</p>
+                        <p class="font-medium text-red-900">Đăng xuất</p>
+                        <p class="text-sm text-red-700">Đăng xuất khỏi tất cả ứng dụng</p>
                     </div>
                 </div>
             </a>
@@ -262,23 +262,23 @@
     @if(config('app.debug'))
     <details class="mt-6 bg-gray-100 rounded-lg p-4">
         <summary class="cursor-pointer font-semibold text-gray-700">
-            🐛 Debug Information (Development Mode)
+            🐛 Thông tin debug (Chế độ phát triển)
         </summary>
         <div class="mt-3 text-xs">
             <div class="bg-white rounded p-3 mb-2">
                 <strong>Session ID:</strong> {{ $stats['session_id'] }}
             </div>
             <div class="bg-white rounded p-3 mb-2">
-                <strong>Auth Check:</strong> {{ $stats['is_authenticated'] ? '✅ Authenticated' : '❌ Not authenticated' }}
+                <strong>Kiểm tra xác thực:</strong> {{ $stats['is_authenticated'] ? '✅ Đã xác thực' : '❌ Chưa xác thực' }}
             </div>
             <div class="bg-white rounded p-3 mb-2">
-                <strong>Session Driver:</strong> {{ $stats['session_driver'] }}
+                <strong>Driver phiên:</strong> {{ $stats['session_driver'] }}
             </div>
             <div class="bg-white rounded p-3 mb-2">
-                <strong>Session Domain:</strong> {{ $stats['session_domain'] }}
+                <strong>Miền phiên:</strong> {{ $stats['session_domain'] }}
             </div>
             <div class="bg-white rounded p-3">
-                <strong>Session Cookie:</strong> {{ $stats['session_cookie'] }}
+                <strong>Cookie phiên:</strong> {{ $stats['session_cookie'] }}
             </div>
         </div>
     </details>

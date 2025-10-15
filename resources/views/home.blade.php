@@ -14,10 +14,10 @@
         </div>
         
         <h1 class="text-4xl font-bold text-gray-900 mb-4">
-            Single Sign-On (SSO) Server
+            Hệ thống SSO Server
         </h1>
         <p class="text-xl text-gray-600 mb-2">
-            Session Sharing - Login 1 lần, truy cập nhiều nơi
+            Chia sẻ phiên đăng nhập - Đăng nhập 1 lần, truy cập nhiều nơi
         </p>
         <p class="text-gray-500">
             auth.balocco-local.info
@@ -64,13 +64,13 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-900">Welcome, {{ Auth::user()->name }}!</h2>
-                        <p class="text-gray-600">You're logged in via Session Sharing</p>
+                        <h2 class="text-2xl font-bold text-gray-900">Chào mừng, {{ Auth::user()->name }}!</h2>
+                        <p class="text-gray-600">Bạn đã đăng nhập qua hệ thống chia sẻ phiên</p>
                     </div>
                 </div>
                 <div>
                     <a href="{{ route('profile') }}" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                        Go to Profile
+                        Xem hồ sơ
                     </a>
                 </div>
             </div>
@@ -83,14 +83,14 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                     </svg>
                 </div>
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Not Logged In</h2>
-                <p class="text-gray-600 mb-6">Please login to access the system</p>
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">Chưa đăng nhập</h2>
+                <p class="text-gray-600 mb-6">Vui lòng đăng nhập để truy cập hệ thống</p>
                 <div class="flex justify-center gap-4">
                     <a href="{{ route('login') }}" class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-                        Login
+                        Đăng nhập
                     </a>
                     <a href="{{ route('register') }}" class="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition">
-                        Register
+                        Đăng ký
                     </a>
                 </div>
             </div>
@@ -106,9 +106,9 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                 </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Session Sharing</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Chia sẻ phiên đăng nhập</h3>
             <p class="text-gray-600">
-                Login một lần, session tự động được share qua database đến tất cả apps trên *.balocco-local.info
+                Đăng nhập một lần, phiên đăng nhập tự động được chia sẻ qua database đến tất cả ứng dụng trên *.balocco-local.info
             </p>
         </div>
 
@@ -119,9 +119,9 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                 </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Real-time Sync</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Đồng bộ thời gian thực</h3>
             <p class="text-gray-600">
-                Login và logout được sync ngay lập tức giữa tất cả applications - không có delay
+                Đăng nhập và đăng xuất được đồng bộ ngay lập tức giữa tất cả ứng dụng - không có độ trễ
             </p>
         </div>
 
@@ -132,16 +132,16 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                 </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Secure</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">Bảo mật</h3>
             <p class="text-gray-600">
-                Session được lưu trong database với encryption, CSRF protection, và secure cookies
+                Phiên đăng nhập được lưu trong database với mã hóa, bảo vệ CSRF và cookie bảo mật
             </p>
         </div>
     </div>
 
     <!-- Connected Apps -->
     <div class="bg-white rounded-lg shadow-md p-8 mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">Connected Applications</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Ứng dụng được kết nối</h2>
         
         <div class="grid md:grid-cols-2 gap-6">
             <!-- Client A -->
@@ -153,16 +153,16 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-900">Patent Monitor</h3>
+                        <h3 class="text-lg font-semibold text-gray-900">Hệ thống giám sát bằng sáng chế</h3>
                         <p class="text-sm text-gray-500">patent-monitor.balocco-local.info</p>
                     </div>
                 </div>
                 <p class="text-gray-600 text-sm mb-4">
-                    Patent monitoring and management system
+                    Hệ thống giám sát và quản lý bằng sáng chế
                 </p>
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                     <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                    SSO Enabled
+                    SSO đã kích hoạt
                 </span>
             </div>
 
@@ -175,16 +175,16 @@
                         </svg>
                     </div>
                     <div>
-                        <h3 class="text-lg font-semibold text-gray-900">Bookcase</h3>
+                        <h3 class="text-lg font-semibold text-gray-900">Hệ thống quản lý sách</h3>
                         <p class="text-sm text-gray-500">bookcase.balocco-local.info</p>
                     </div>
                 </div>
                 <p class="text-gray-600 text-sm mb-4">
-                    Book management and library system
+                    Hệ thống quản lý sách và thư viện
                 </p>
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                     <span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                    SSO Enabled
+                    SSO đã kích hoạt
                 </span>
             </div>
         </div>
@@ -192,7 +192,7 @@
 
     <!-- How It Works -->
     <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg shadow-md p-8 mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">How Session Sharing Works</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Cách thức hoạt động của chia sẻ phiên đăng nhập</h2>
         
         <div class="grid md:grid-cols-4 gap-6">
             <!-- Step 1 -->
@@ -200,9 +200,9 @@
                 <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow">
                     <span class="text-2xl font-bold text-blue-600">1</span>
                 </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Login Once</h3>
+                <h3 class="font-semibold text-gray-900 mb-2">Đăng nhập một lần</h3>
                 <p class="text-sm text-gray-600">
-                    Login at Auth Server or any client app
+                    Đăng nhập tại Server Auth hoặc bất kỳ ứng dụng client nào
                 </p>
             </div>
 
@@ -211,9 +211,9 @@
                 <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow">
                     <span class="text-2xl font-bold text-green-600">2</span>
                 </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Session Saved</h3>
+                <h3 class="font-semibold text-gray-900 mb-2">Lưu phiên đăng nhập</h3>
                 <p class="text-sm text-gray-600">
-                    Session stored in shared database
+                    Phiên đăng nhập được lưu trong database chung
                 </p>
             </div>
 
@@ -222,9 +222,9 @@
                 <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow">
                     <span class="text-2xl font-bold text-purple-600">3</span>
                 </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Cookie Shared</h3>
+                <h3 class="font-semibold text-gray-900 mb-2">Chia sẻ Cookie</h3>
                 <p class="text-sm text-gray-600">
-                    Cookie shared to all *.balocco-local.info
+                    Cookie được chia sẻ đến tất cả *.balocco-local.info
                 </p>
             </div>
 
@@ -233,9 +233,9 @@
                 <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow">
                     <span class="text-2xl font-bold text-orange-600">4</span>
                 </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Auto Login</h3>
+                <h3 class="font-semibold text-gray-900 mb-2">Tự động đăng nhập</h3>
                 <p class="text-sm text-gray-600">
-                    All apps see you as logged in!
+                    Tất cả ứng dụng đều thấy bạn đã đăng nhập!
                 </p>
             </div>
         </div>
@@ -247,7 +247,7 @@
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-600 mb-1">Total Users</p>
+                    <p class="text-sm text-gray-600 mb-1">Tổng số người dùng</p>
                     <p class="text-3xl font-bold text-blue-600">{{ $stats['total_users'] }}</p>
                 </div>
                 <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -261,7 +261,7 @@
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-600 mb-1">Active Sessions</p>
+                    <p class="text-sm text-gray-600 mb-1">Phiên đăng nhập hoạt động</p>
                     <p class="text-3xl font-bold text-green-600">{{ $stats['active_sessions'] }}</p>
                 </div>
                 <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -275,7 +275,7 @@
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm text-gray-600 mb-1">Total Logins</p>
+                    <p class="text-sm text-gray-600 mb-1">Tổng số lần đăng nhập</p>
                     <p class="text-3xl font-bold text-purple-600">{{ $stats['total_logins'] }}</p>
                 </div>
                 <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -291,12 +291,12 @@
     @if(Auth::check() && Auth::user()->role === 'admin')
     <div class="bg-white rounded-lg shadow-md p-8 mb-12">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-900">👥 User Management</h2>
+            <h2 class="text-2xl font-bold text-gray-900">👥 Quản lý người dùng</h2>
             <a href="{{ route('register') }}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
                 <svg class="w-5 h-5 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                 </svg>
-                Add New User
+                Thêm người dùng mới
             </a>
         </div>
 
@@ -305,12 +305,12 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Người dùng</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vai trò</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày tạo</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -353,12 +353,12 @@
                             @if($isOnline)
                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                     <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
-                                    Online
+                                    Trực tuyến
                                 </span>
                             @else
                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
                                     <span class="w-2 h-2 bg-gray-400 rounded-full mr-1"></span>
-                                    Offline
+                                    Ngoại tuyến
                                 </span>
                             @endif
                         </td>
@@ -384,7 +384,7 @@
                                     </form>
                                 </div>
                             @else
-                                <span class="text-gray-400 text-xs">Protected</span>
+                                <span class="text-gray-400 text-xs">Được bảo vệ</span>
                             @endif
                         </td>
                     </tr>
@@ -397,7 +397,7 @@
             <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
             </svg>
-            <p>No users found. <a href="{{ route('register') }}" class="text-blue-600 hover:underline">Create first user</a></p>
+            <p>Không tìm thấy người dùng nào. <a href="{{ route('register') }}" class="text-blue-600 hover:underline">Tạo người dùng đầu tiên</a></p>
         </div>
         @endif
     </div>
@@ -406,7 +406,7 @@
     <!-- Recent Login Activity -->
     @if($stats['recent_logins']->count() > 0)
     <div class="bg-white rounded-lg shadow-md p-8 mb-12">
-        <h2 class="text-2xl font-bold text-gray-900 mb-6">📊 Recent Login Activity</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">📊 Hoạt động đăng nhập gần đây</h2>
         
         <div class="space-y-3">
             @foreach($stats['recent_logins'] as $log)
@@ -435,9 +435,9 @@
     <div class="grid md:grid-cols-2 gap-6">
         <!-- Setup Guide -->
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">📖 Setup Guide</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">📖 Hướng dẫn thiết lập</h3>
             <p class="text-gray-600 mb-4">
-                Để integrate SSO vào client apps (Patent Monitor & Bookcase):
+                Để tích hợp SSO vào các ứng dụng client (Patent Monitor & Bookcase):
             </p>
             <ol class="list-decimal list-inside text-sm text-gray-600 space-y-2">
                 <li>Config <code class="bg-gray-100 px-1 rounded">SESSION_DOMAIN=.balocco-local.info</code></li>
@@ -447,34 +447,34 @@
             </ol>
             <div class="mt-4">
                 <a href="/SESSION-SHARING-QUICK-SETUP.md" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                    Read full guide →
+                    Đọc hướng dẫn đầy đủ →
                 </a>
             </div>
         </div>
 
         <!-- System Info -->
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-4">⚙️ System Info</h3>
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">⚙️ Thông tin hệ thống</h3>
             <div class="space-y-3 text-sm">
                 <div class="flex justify-between">
-                    <span class="text-gray-600">Laravel Version:</span>
+                    <span class="text-gray-600">Phiên bản Laravel:</span>
                     <span class="font-medium">{{ app()->version() }}</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-gray-600">PHP Version:</span>
+                    <span class="text-gray-600">Phiên bản PHP:</span>
                     <span class="font-medium">{{ PHP_VERSION }}</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-gray-600">Session Driver:</span>
+                    <span class="text-gray-600">Driver phiên:</span>
                     <span class="font-medium">{{ config('session.driver') }}</span>
                 </div>
                 <div class="flex justify-between">
-                    <span class="text-gray-600">Session Domain:</span>
+                    <span class="text-gray-600">Miền phiên:</span>
                     <span class="font-medium">{{ config('session.domain') ?: '(not set)' }}</span>
                 </div>
                 @auth
                 <div class="flex justify-between">
-                    <span class="text-gray-600">Your Session ID:</span>
+                    <span class="text-gray-600">ID phiên của bạn:</span>
                     <span class="font-medium text-xs">{{ substr(session()->getId(), 0, 20) }}...</span>
                 </div>
                 @endauth
