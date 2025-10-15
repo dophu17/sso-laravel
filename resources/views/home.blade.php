@@ -454,51 +454,6 @@
         </div>
     </div>
 
-    <!-- Documentation Links -->
-    <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h3 class="text-lg font-semibold text-blue-900 mb-4">📚 Documentation</h3>
-        <div class="grid md:grid-cols-2 gap-4">
-            <a href="/SESSION-SHARING-QUICK-SETUP.md" class="flex items-center p-3 bg-white rounded-lg hover:shadow transition">
-                <svg class="w-5 h-5 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
-                <div>
-                    <p class="font-medium text-gray-900">Quick Setup</p>
-                    <p class="text-xs text-gray-600">5-minute guide</p>
-                </div>
-            </a>
-            
-            <a href="/TEST-SESSION-SHARING.md" class="flex items-center p-3 bg-white rounded-lg hover:shadow transition">
-                <svg class="w-5 h-5 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <div>
-                    <p class="font-medium text-gray-900">Testing Guide</p>
-                    <p class="text-xs text-gray-600">Complete tests</p>
-                </div>
-            </a>
-            
-            <a href="/docs/SESSION-SHARING-GUIDE.md" class="flex items-center p-3 bg-white rounded-lg hover:shadow transition">
-                <svg class="w-5 h-5 text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                </svg>
-                <div>
-                    <p class="font-medium text-gray-900">Complete Guide</p>
-                    <p class="text-xs text-gray-600">Full documentation</p>
-                </div>
-            </a>
-            
-            <a href="/QUICK-FIX-419.md" class="flex items-center p-3 bg-white rounded-lg hover:shadow transition">
-                <svg class="w-5 h-5 text-red-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
-                </svg>
-                <div>
-                    <p class="font-medium text-gray-900">Fix 419 Error</p>
-                    <p class="text-xs text-gray-600">Troubleshooting</p>
-                </div>
-            </a>
-        </div>
-    </div>
 
 </div>
 @endsection
