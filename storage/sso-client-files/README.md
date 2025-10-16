@@ -22,10 +22,11 @@ cp sso.php /path/to/client/config/
 ### 2. Update .env
 
 ```env
-SSO_SERVER=https://auth.balocco-local.info
+SSO_SERVER=https://auth.your-domain.com
 SSO_CALLBACK_URL=https://your-app.com/sso/callback
 
-SESSION_DOMAIN=.balocco-local.info
+SESSION_DOMAIN=.your-domain.com
+SESSION_COOKIE=your_session_name
 SESSION_SECURE_COOKIE=true
 SESSION_SAME_SITE=lax
 ```

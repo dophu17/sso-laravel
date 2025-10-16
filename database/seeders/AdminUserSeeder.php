@@ -15,8 +15,9 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         // Create admin user if not exists
+        $adminEmail = 'admin@' . env('SSO_DOMAIN', 'your-domain.com');
         $admin = User::firstOrCreate(
-            ['email' => 'admin@balocco-local.info'],
+            ['email' => $adminEmail],
             [
                 'name' => 'Admin User',
                 'password' => Hash::make('admin123'),
@@ -26,8 +27,9 @@ class AdminUserSeeder extends Seeder
         );
 
         // Create a member user for testing
+        $memberEmail = 'member@' . env('SSO_DOMAIN', 'your-domain.com');
         $member = User::firstOrCreate(
-            ['email' => 'member@balocco-local.info'],
+            ['email' => $memberEmail],
             [
                 'name' => 'Member User',
                 'password' => Hash::make('member123'),
@@ -36,7 +38,7 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        $this->command->info('Admin user created: admin@balocco-local.info (password: admin123)');
-        $this->command->info('Member user created: member@balocco-local.info (password: member123)');
+        $this->command->info('Admin user created: ' . $adminEmail . ' (password: admin123)');
+        $this->command->info('Member user created: ' . $memberEmail . ' (password: member123)');
     }
 }

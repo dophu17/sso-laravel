@@ -80,7 +80,7 @@ class RegisterController extends Controller
             // Validate redirect URL (security: only allow same domain)
             $parsedUrl = parse_url($redirectUrl);
             
-            if (isset($parsedUrl['host']) && str_ends_with($parsedUrl['host'], 'balocco-local.info')) {
+            if (isset($parsedUrl['host']) && str_ends_with($parsedUrl['host'], env('SSO_DOMAIN'))) {
                 \Illuminate\Support\Facades\Log::info('SSO Register - Redirecting back to client', [
                     'user_id' => $user->id,
                     'redirect_url' => $redirectUrl

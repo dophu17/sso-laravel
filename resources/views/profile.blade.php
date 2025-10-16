@@ -42,7 +42,7 @@
                 <strong>✅ Bạn đã đăng nhập qua hệ thống chia sẻ phiên SSO!</strong>
             </p>
             <p class="text-sm text-green-700 mt-1">
-                Phiên đăng nhập của bạn tự động được chia sẻ trên tất cả ứng dụng *.balocco-local.info
+                Phiên đăng nhập của bạn tự động được chia sẻ trên tất cả ứng dụng *.{{ env('SSO_DOMAIN', 'your-domain.com') }}
             </p>
         </div>
     </div>
@@ -56,10 +56,10 @@
             Phiên đăng nhập của bạn được lưu trong database chung và tự động có sẵn cho:
         </p>
         <ul class="list-disc list-inside text-blue-700 space-y-1 ml-4">
-            <li>Server Auth (auth.balocco-local.info)</li>
-            <li>Hệ thống giám sát bằng sáng chế (patent-monitor.balocco-local.info)</li>
-            <li>Hệ thống quản lý sách (bookcase.balocco-local.info)</li>
-            <li>Bất kỳ ứng dụng nào trong tương lai trên *.balocco-local.info</li>
+            <li>Server Auth ({{ env('SSO_AUTH_URL', 'http://auth.your-domain.com') }})</li>
+            <li>Hệ thống giám sát bằng sáng chế (patent-monitor.{{ env('SSO_DOMAIN', 'your-domain.com') }})</li>
+            <li>Hệ thống quản lý sách (bookcase.{{ env('SSO_DOMAIN', 'your-domain.com') }})</li>
+            <li>Bất kỳ ứng dụng nào trong tương lai trên *.{{ env('SSO_DOMAIN', 'your-domain.com') }}</li>
         </ul>
     </div>
 

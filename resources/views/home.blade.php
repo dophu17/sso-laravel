@@ -20,7 +20,7 @@
             Chia sẻ phiên đăng nhập - Đăng nhập 1 lần, truy cập nhiều nơi
         </p>
         <p class="text-gray-500">
-            auth.balocco-local.info
+            {{ env('SSO_AUTH_URL', 'http://auth.your-domain.com') }}
         </p>
     </div>
 
@@ -108,7 +108,7 @@
             </div>
             <h3 class="text-lg font-semibold text-gray-900 mb-2">Chia sẻ phiên đăng nhập</h3>
             <p class="text-gray-600">
-                Đăng nhập một lần, phiên đăng nhập tự động được chia sẻ qua database đến tất cả ứng dụng trên *.balocco-local.info
+                Đăng nhập một lần, phiên đăng nhập tự động được chia sẻ qua database đến tất cả ứng dụng trên *.{{ env('SSO_DOMAIN', 'your-domain.com') }}
             </p>
         </div>
 
@@ -154,7 +154,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900">Hệ thống giám sát bằng sáng chế</h3>
-                        <p class="text-sm text-gray-500">patent-monitor.balocco-local.info</p>
+                        <p class="text-sm text-gray-500">patent-monitor.{{ env('SSO_DOMAIN', 'your-domain.com') }}</p>
                     </div>
                 </div>
                 <p class="text-gray-600 text-sm mb-4">
@@ -176,7 +176,7 @@
                     </div>
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900">Hệ thống quản lý sách</h3>
-                        <p class="text-sm text-gray-500">bookcase.balocco-local.info</p>
+                        <p class="text-sm text-gray-500">bookcase.{{ env('SSO_DOMAIN', 'your-domain.com') }}</p>
                     </div>
                 </div>
                 <p class="text-gray-600 text-sm mb-4">
@@ -224,7 +224,7 @@
                 </div>
                 <h3 class="font-semibold text-gray-900 mb-2">Chia sẻ Cookie</h3>
                 <p class="text-sm text-gray-600">
-                    Cookie được chia sẻ đến tất cả *.balocco-local.info
+                    Cookie được chia sẻ đến tất cả *.{{ env('SSO_DOMAIN', 'your-domain.com') }}
                 </p>
             </div>
 
@@ -459,7 +459,7 @@
                 Để tích hợp SSO vào các ứng dụng client (Patent Monitor & Bookcase):
             </p>
             <ol class="list-decimal list-inside text-sm text-gray-600 space-y-2">
-                <li>Config <code class="bg-gray-100 px-1 rounded">SESSION_DOMAIN=.balocco-local.info</code></li>
+                <li>Config <code class="bg-gray-100 px-1 rounded">SESSION_DOMAIN=.{{ env('SSO_DOMAIN', 'your-domain.com') }}</code></li>
                 <li>Run <code class="bg-gray-100 px-1 rounded">php artisan session:table && migrate</code></li>
                 <li>Create middleware <code class="bg-gray-100 px-1 rounded">CheckSharedSession</code></li>
                 <li>Test login flow</li>
