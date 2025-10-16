@@ -31,3 +31,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
+// README Documentation
+Route::get('/README.md', [HomeController::class, 'showReadme'])->name('readme');
+

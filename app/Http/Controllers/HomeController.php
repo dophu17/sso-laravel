@@ -36,5 +36,21 @@ class HomeController extends Controller
         return view('home', compact('users', 'stats'));
     }
 
+    /**
+     * Show README documentation
+     */
+    public function showReadme()
+    {
+        $readmePath = base_path('README.md');
+        
+        if (!file_exists($readmePath)) {
+            abort(404, 'README file not found');
+        }
+        
+        $readmeContent = file_get_contents($readmePath);
+        
+        return view('readme', compact('readmeContent'));
+    }
+
 }
 

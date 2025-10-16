@@ -465,7 +465,7 @@
                 <li>Test login flow</li>
             </ol>
             <div class="mt-4">
-                <a href="/README.md" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                <a href="{{ route('readme') }}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
                     Đọc hướng dẫn đầy đủ →
                 </a>
             </div>
