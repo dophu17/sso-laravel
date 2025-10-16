@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('callback_url')->nullable();
             $table->string('ip_address', 45)->nullable();
             $table->string('user_agent')->nullable();
-            $table->enum('action', ['login', 'register', 'logout'])->default('login');
+            $table->enum('action', ['login', 'register', 'logout', 'password_reset'])->default('login');
             $table->enum('status', ['success', 'failed'])->default('success');
             $table->text('session_token')->nullable();
             $table->timestamp('login_at');
