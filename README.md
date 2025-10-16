@@ -7,9 +7,9 @@ Hệ thống Single Sign-On sử dụng **Session Sharing** - Đăng nhập 1 l�
 ## 🌐 Hệ thống
 
 ```
-Auth Server:  http://auth.balocco-local.info
-Client A:     http://patent-monitor.balocco-local.info  (Hệ thống giám sát bằng sáng chế)
-Client B:     http://bookcase.balocco-local.info        (Hệ thống quản lý sách)
+Auth Server:  http://auth.your-domain.com
+Client A:     http://patent-monitor.your-domain.com  (Hệ thống giám sát bằng sáng chế)
+Client B:     http://bookcase.your-domain.com        (Hệ thống quản lý sách)
 ```
 
 **Đăng nhập 1 lần → Tất cả ứng dụng đều thấy đã đăng nhập! 🚀**
@@ -24,8 +24,8 @@ Client B:     http://bookcase.balocco-local.info        (Hệ thống quản lý
 ```env
 DB_DATABASE=sso_shared
 SESSION_DRIVER=database
-SESSION_DOMAIN=.balocco-local.info
-SESSION_COOKIE=balocco_session
+SESSION_DOMAIN=.your-domain.com
+SESSION_COOKIE=your_session_name
 SESSION_SECURE_COOKIE=false
 ```
 
@@ -39,7 +39,7 @@ php artisan config:clear
 **Khởi động:**
 ```bash
 php artisan serve
-# Truy cập: http://auth.balocco-local.info
+# Truy cập: http://auth.your-domain.com
 ```
 
 ### 2. Client Apps (10 phút mỗi app)
@@ -48,8 +48,8 @@ php artisan serve
 ```env
 DB_DATABASE=sso_shared  # Cùng database với Auth Server
 SESSION_DRIVER=database
-SESSION_DOMAIN=.balocco-local.info
-SESSION_COOKIE=balocco_session
+SESSION_DOMAIN=.your-domain.com
+SESSION_COOKIE=your_session_name
 SESSION_SECURE_COOKIE=false
 ```
 
@@ -76,7 +76,7 @@ class CheckSharedSession
     public function handle(Request $request, Closure $next)
     {
         // Kiểm tra session trong database
-        $sessionId = $request->cookie('balocco_session');
+        $sessionId = $request->cookie('your_session_name');
         
         if ($sessionId) {
             $session = DB::table('sessions')
@@ -122,7 +122,7 @@ $middleware->web(append: [
 
 ```
 Đăng nhập ở bất kỳ app → Session lưu vào database
-                     → Cookie chia sẻ (.balocco-local.info)
+                     → Cookie chia sẻ (.your-domain.com)
                      → Tất cả apps: Auth::check() = true
                      → ✅ Tự động đăng nhập!
 ```
@@ -134,7 +134,7 @@ $middleware->web(append: [
 ### Đăng nhập từ Client App
 ```php
 // Trong client app, redirect đến Auth Server
-return redirect('http://auth.balocco-local.info/login?redirect=' . urlencode($redirectUrl));
+return redirect('http://auth.your-domain.com/login?redirect=' . urlencode($redirectUrl));
 ```
 
 ### Kiểm tra đăng nhập
@@ -150,7 +150,7 @@ if (Auth::check()) {
 ```php
 // Đăng xuất khỏi tất cả apps
 Auth::logout();
-return redirect('http://auth.balocco-local.info/logout?redirect=' . urlencode($redirectUrl));
+return redirect('http://auth.your-domain.com/logout?redirect=' . urlencode($redirectUrl));
 ```
 
 ---
@@ -166,9 +166,9 @@ php artisan config:clear
 ```
 
 ### Session không chia sẻ
-- Kiểm tra `SESSION_DOMAIN=.balocco-local.info`
+- Kiểm tra `SESSION_DOMAIN=.your-domain.com`
 - Kiểm tra cùng database `sso_shared`
-- Kiểm tra cookie name `balocco_session`
+- Kiểm tra cookie name `your_session_name`
 
 ### Redirect không hoạt động
 - Kiểm tra parameter `redirect` trong URL

@@ -30,7 +30,7 @@ class LoginController extends Controller
      * Session Sharing Approach:
      * - Auth::attempt() creates session in database
      * - Session automatically shared across all subdomains via SESSION_DOMAIN
-     * - Cookie domain=.balocco-local.info shares session to all apps
+     * - Cookie domain from SESSION_DOMAIN shares session to all apps
      */
     public function login(Request $request)
     {
@@ -71,7 +71,7 @@ class LoginController extends Controller
                 // Validate redirect URL (security: only allow same domain)
                 $parsedUrl = parse_url($redirectUrl);
                 
-                if (isset($parsedUrl['host']) && str_ends_with($parsedUrl['host'], 'balocco-local.info')) {
+                if (isset($parsedUrl['host']) && str_ends_with($parsedUrl['host'], env('SSO_DOMAIN'))) {
                     Log::info('SSO Login - Redirecting back to client', [
                         'user_id' => $user->id,
                         'redirect_url' => $redirectUrl
@@ -144,7 +144,7 @@ class LoginController extends Controller
             // Validate redirect URL (security: only allow same domain)
             $parsedUrl = parse_url($redirectUrl);
             
-            if (isset($parsedUrl['host']) && str_ends_with($parsedUrl['host'], 'balocco-local.info')) {
+            if (isset($parsedUrl['host']) && str_ends_with($parsedUrl['host'], env('SSO_DOMAIN'))) {
                 Log::info('SSO Logout - Redirecting back to client', [
                     'user_id' => $user->id ?? null,
                     'redirect_url' => $redirectUrl

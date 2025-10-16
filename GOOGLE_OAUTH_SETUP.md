@@ -31,7 +31,7 @@
 3. Enable Google+ API
 4. Tạo OAuth 2.0 credentials:
    - Application type: Web application
-   - Authorized redirect URIs: `http://auth.balocco-local.info/auth/google/callback`
+   - Authorized redirect URIs: `http://auth.your-domain.com/auth/google/callback`
 
 ### **Bước 2: Cấu hình .env**
 
@@ -41,7 +41,7 @@ Thêm vào file `.env`:
 # Google OAuth Configuration
 GOOGLE_CLIENT_ID=your_google_client_id_here
 GOOGLE_CLIENT_SECRET=your_google_client_secret_here
-GOOGLE_REDIRECT_URI=http://auth.balocco-local.info/auth/google/callback
+GOOGLE_REDIRECT_URI=http://auth.your-domain.com/auth/google/callback
 ```
 
 ### **Bước 3: Clear Cache**
@@ -57,14 +57,14 @@ php artisan cache:clear
 
 1. **Truy cập login page:**
    ```
-   http://auth.balocco-local.info/login
+   http://auth.your-domain.com/login
    ```
 
 2. **Click "Đăng nhập bằng Google"**
 
 3. **Với redirect từ client:**
    ```
-   http://auth.balocco-local.info/login?redirect=https://client-app.com/dashboard
+   http://auth.your-domain.com/login?redirect=https://client-app.com/dashboard
    ```
 
 ### **Test Flow:**
@@ -79,7 +79,7 @@ php artisan cache:clear
 
 ```php
 // Trong client app, redirect đến SSO với Google login
-$ssoUrl = 'http://auth.balocco-local.info/login?' . http_build_query([
+$ssoUrl = 'http://auth.your-domain.com/login?' . http_build_query([
     'redirect' => 'https://client-app.com/dashboard',
     'client_id' => 'your_client_id',
     'redirect_uri' => 'https://client-app.com/callback',
@@ -90,7 +90,7 @@ $ssoUrl = 'http://auth.balocco-local.info/login?' . http_build_query([
 ### **Session Sharing:**
 
 - Google login tạo session giống như login thường
-- Session được share qua `SESSION_DOMAIN=.balocco-local.info`
+- Session được share qua `SESSION_DOMAIN=.your-domain.com`
 - Client apps có thể access session ngay lập tức
 
 ## 📊 **Database Schema:**
