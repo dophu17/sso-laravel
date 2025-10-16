@@ -37,6 +37,10 @@ Route::post('/password/email', [App\Http\Controllers\Auth\PasswordResetControlle
 Route::get('/password/reset/{token}', [App\Http\Controllers\Auth\PasswordResetController::class, 'showResetForm'])->name('password.reset');
 Route::post('/password/reset', [App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->name('password.update');
 
+// Google OAuth Routes
+Route::get('/auth/google', [App\Http\Controllers\Auth\GoogleController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [App\Http\Controllers\Auth\GoogleController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
 // README Documentation
 Route::get('/README.md', [HomeController::class, 'showReadme'])->name('readme');
 
