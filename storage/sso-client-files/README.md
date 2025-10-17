@@ -1,70 +1,68 @@
-# SSO Client Files
+# 🚀 SSO Client Integration Files
 
-## 📁 Generated Files
+## 📁 **Client Examples**
 
-1. **SSOService.php** → `app/Services/`
-2. **SSOController.php** → `app/Http/Controllers/Auth/`
-3. **SSOAuthenticate.php** → `app/Http/Middleware/`
-4. **sso.php** → `config/`
-5. **.env.sso.example** → Merge into `.env`
+Thư mục này chứa các ví dụ tích hợp SSO cho các platform khác nhau:
 
-## 🚀 Installation
+### **🟢 NodeJS Client** (`nodejs-example/`)
+- Complete Express.js application với SSO integration
+- Authentication middleware và service classes
+- Automatic redirect handling
 
-### 1. Copy Files to Your Client App
+### **⚛️ NextJS Client** (`nextjs-example/`)
+- Complete NextJS application với SSO integration
+- Hỗ trợ cả client-side và server-side authentication
+- React hooks và HOCs cho authentication
 
+### **🐘 PHP/Laravel Client** (`php-example/`)
+- SSO service classes cho Laravel applications
+- API controller cho session verification
+- Middleware cho route protection
+
+## 🚀 **Quick Start**
+
+### **NodeJS:**
 ```bash
-cp SSOService.php /path/to/client/app/Services/
-cp SSOController.php /path/to/client/app/Http/Controllers/Auth/
-cp SSOAuthenticate.php /path/to/client/app/Http/Middleware/
-cp sso.php /path/to/client/config/
+cd nodejs-example/
+npm install
+npm start
 ```
 
-### 2. Update .env
-
-```env
-SSO_SERVER=https://auth.your-domain.com
-SSO_CALLBACK_URL=https://your-app.com/sso/callback
-
-SESSION_DOMAIN=.your-domain.com
-SESSION_COOKIE=your_session_name
-SESSION_SECURE_COOKIE=true
-SESSION_SAME_SITE=lax
-```
-
-### 3. Register Middleware
-
-In `bootstrap/app.php`:
-
-```php
-->withMiddleware(function (Middleware $middleware) {
-    $middleware->alias([
-        'sso.auth' => \App\Http\Middleware\SSOAuthenticate::class,
-    ]);
-})
-```
-
-### 4. Add Routes
-
-In `routes/web.php`:
-
-```php
-use App\Http\Controllers\Auth\SSOController;
-
-Route::get('/sso/callback', [SSOController::class, 'callback']);
-Route::get('/sso/logout', [SSOController::class, 'logout']);
-
-Route::middleware(['sso.auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index']);
-});
-```
-
-### 5. Test
-
+### **NextJS:**
 ```bash
-php artisan cache:clear
-# Visit /dashboard → should redirect to SSO
+cd nextjs-example/
+npm install
+npm run dev
 ```
 
-## 📖 Documentation
+### **PHP/Laravel:**
+```bash
+cd php-example/
+# Copy files vào Laravel app theo hướng dẫn trong README
+```
 
-See full guide: `docs/LARAVEL-CLIENT-INTEGRATION.md`
+## 📚 **Documentation**
+
+- `README-API.md` - API endpoints documentation
+- `README-NEXTJS.md` - NextJS integration guide
+- `nodejs-example/README.md` - NodeJS client guide
+- `php-example/README.md` - PHP client guide
+
+## 🎯 **Features**
+
+- ✅ **Multiple Platforms**: NodeJS, NextJS, PHP/Laravel
+- ✅ **API Endpoints**: Session verification APIs
+- ✅ **Authentication Helpers**: Middleware và services
+- ✅ **Configuration Templates**: Ready-to-use configs
+- ✅ **Complete Documentation**: Step-by-step guides
+
+## 📖 **API Endpoints**
+
+Tất cả client examples sử dụng các API endpoints sau:
+
+- `POST /api/sso/verify-session` - Verify user session
+- `GET /api/sso/user` - Get user information
+- `GET /api/sso/server-info` - Get server configuration
+- `GET /api/sso/check-session` - Quick session check
+
+Xem `README-API.md` để biết chi tiết về API usage.
